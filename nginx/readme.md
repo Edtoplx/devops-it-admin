@@ -48,6 +48,41 @@ sudo apt install nginx
 
 ```
 
+## Basic Auth for nginx Vhost
+[Official Nginx Documentation](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
+
+### Prerequisites
+
+```shell
+sudo apt install apache2-utils 
+```
+
+### Generate the password files
+```shell
+sudo htpasswd -c /location/of/the/.files username
+```
+
+### Nginx configuration for basic Authentication
+### For The Whole Vhost
+```nginx
+server {
+    ...
+    auth_basic           "Administrator’s Area";
+    auth_basic_user_file conf/htpasswd;
+
+    location / {
+    }
+}
+```
+### For Location 
+```nginx
+location /endpoint {
+    auth_basic           "Administrator’s Area";
+    auth_basic_user_file /location/of/the/.files;
+}
+```
+
+
 ## Vhost Configuration Template
 
 ```
