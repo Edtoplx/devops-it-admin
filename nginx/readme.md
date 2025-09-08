@@ -1,6 +1,6 @@
 # NGINX CONF
 ## Installation on ubuntu server
-```
+```shell
 sudo apt update
 sudo apt install nginx
 ```
@@ -8,7 +8,7 @@ sudo apt install nginx
 ## Installation specific nginx version on ubuntu
 [Official Nginx Documentation](https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/)
 
-```
+```shell
 ### 1. Install the prerequisite
 
 sudo apt update && \
@@ -81,11 +81,31 @@ location /endpoint {
     auth_basic_user_file /location/of/the/.files;
 }
 ```
+## NGINX Load Balancing Configuration 
 
+[Official Nginx Documentation](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/)
+
+### Proxy http to group of servers
+#### Note: When configuring any method other than Round Robin, put the corresponding directive (hash, ip_hash, least_conn, least_time, or random) above the list of server directives in the upstream {} block.
+```nginx
+http {
+    upstream backend_services {
+        least_conn;
+        server backend1.example.com;
+        server backend2.example.com;
+    }
+
+    server {
+        location / {
+            proxy_pass http://backend_services;
+        }
+    }
+}
+```
 
 ## Vhost Configuration Template
 
-```
+```nginx
 server {
     server_name your.domain.cloud;
 
